@@ -9,14 +9,14 @@ module.exports = function (app) {
 
   app.route("/api/check").post(
     catchAsync(async (req, res, next) => {
+      if (!req.body.coordinate || !req.body.value || !req.body.puzzle)
+        return next(new AppError(400, "Required field(s) missing"));
+      
       const puzzleString = req.body.puzzle;
       const coordinate = req.body.coordinate;
       const value = req.body.value;
-
-      if (!coordinate || !value || !puzzleString)
-        return next(new AppError(400, "Required field(s) missing"));
-
-      if (value > 9 || value < 1)
+      
+      if (isNaN(value) || value > 9 || value < 1)
         return next(new AppError(400, "Invalid value"));
 
       const validate = solver.validate(puzzleString);
@@ -27,8 +27,10 @@ module.exports = function (app) {
       if (row > 9 || row < 1 || col > 9 || col < 1)
         return next(new AppError(400, "Invalid coordinate"));
 
+      if(solver.checkIfAlreadyPresent(puzzleString, row-1, col-1, value))
+        return res.status(200).json({valid: true});
+      
       const conflict = [];
-
       if (!solver.checkRowPlacement(puzzleString, row - 1, col - 1, value))
         conflict.push("row");
       if (!solver.checkColPlacement(puzzleString, row - 1, col - 1, value))

@@ -40,6 +40,10 @@ class SudokuSolver {
     return true;
   }
 
+  checkIfAlreadyPresent(puzzleString, row, column, value) {
+    return puzzleString[row * 9 + column] * 1 == value * 1;
+  }
+
   solve(puzzleString) {
     const grid = [];
 

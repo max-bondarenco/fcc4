@@ -3,12 +3,13 @@
   "version": "2.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "test": "mocha --timeout 5000 --require @babel/register --recursive --exit --ui tdd tests/",
     "dev": "nodemon server.js"
   },
   "license": "MIT",
   "dependencies": {
+    "@babel/register": "^7.21.0",
     "chai": "^4.3.7",
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",
