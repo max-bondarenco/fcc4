@@ -45,6 +45,9 @@ class SudokuSolver {
   }
 
   solve(puzzleString) {
+    const validate = this.validate(puzzleString);
+    if (!validate.valid) return { error: validate.error };
+
     const grid = [];
 
     for (let i = 0; i < 81; i++) {
