@@ -29,7 +29,8 @@ app.use(function (req, res, next) {
 
 //Error handling middleware
 app.use(function (err, req, res, next) {
-  if (err.custom) return res.status(200).json({ error: err.message });
+  if (err.custom)
+    return res.status(err.statusCode).json({ error: err.message });
   console.log(err);
 });
 
